@@ -1,13 +1,13 @@
 package com.loftschool.ozaharenko.loftmoney;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,21 +41,21 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.addItem(new Item("Сковородка с антипригарным покрытием", 1670));
     }
 
-        @Override
-        protected void onActivityResult(
-                final int requestCode, final int resultCode, @Nullable final Intent data
-        ) {
-            super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(
+            final int requestCode, final int resultCode, @Nullable final Intent data
+    ) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-            int price;
+        int price;
 
-            try {
-                price = Integer.parseInt(data.getStringExtra("price"));
-            } catch (NumberFormatException e) {
-                price = 0;
-            }
-            if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-                mAdapter.addItem(new Item(data.getStringExtra("name"), price));
-            }
+        try {
+            price = Integer.parseInt(data != null ? data.getStringExtra("price") : "");
+        } catch (NumberFormatException e) {
+            price = 0;
         }
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            mAdapter.addItem(new Item(data != null ? data.getStringExtra("name") : null, price));
+        }
+    }
 }
