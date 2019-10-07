@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.budget_item_list);
 
         mAdapter = new ItemsAdapter();
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.addItem(new Item("Молоко", 70));
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         int price;
 
         try {
-            price = Integer.parseInt(data != null ? data.getStringExtra("price") : "");
+            price = Integer.parseInt(data != null ? data.getStringExtra("price") : "0");
         } catch (NumberFormatException e) {
             price = 0;
         }
