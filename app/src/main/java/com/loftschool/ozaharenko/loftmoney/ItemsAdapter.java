@@ -47,7 +47,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
             mNameView = itemView.findViewById(R.id.name_view);
             mPriceView = itemView.findViewById(R.id.price_view);
-        }
+            };
 
         public void bindItem(final Item item) {
             mNameView.setText(item.getName());
