@@ -39,11 +39,5 @@
             tools:text="70 ₽"/>
     </RelativeLayout>
 
-    <View
-       android:background="@color/white_six"
-       android:layout_gravity="bottom"
-       android:layout_width="match_parent"
-       android:layout_height="1dp" />
-
 </FrameLayout>
 
