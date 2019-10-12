@@ -24,6 +24,7 @@ public class AddItemActivity extends AppCompatActivity {
         mPriceEditText = findViewById(R.id.price_edittext);
 
         Button addButton = findViewById(R.id.add_button);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
