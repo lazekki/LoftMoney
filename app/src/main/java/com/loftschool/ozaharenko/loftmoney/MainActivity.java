@@ -7,13 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String EXPENSE = "expense";
+    public static final String INCOME = "income";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
 
         tabLayout.setupWithViewPager(viewPager);
+
         tabLayout.getTabAt(0).setText(R.string.expences);
         tabLayout.getTabAt(1).setText(R.string.income);
     }
@@ -39,7 +40,15 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            return new BudgetFragment();
+
+            switch (position) {
+                case 0:
+                    return BudgetFragment.newInstance(R.color.dark_sky_blue, EXPENSE);
+                case 1:
+                    return BudgetFragment.newInstance(R.color.apple_green, INCOME);
+                default:
+                    return null;
+            }
         }
 
         @Override
@@ -47,5 +56,4 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
     }
-
 }

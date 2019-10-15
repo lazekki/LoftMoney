@@ -16,7 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 public class BudgetFragment extends Fragment {
 
     private static final int REQUEST_CODE = 100;
+    private static final String COLOR_ID = "colorId";
+    private static final String TYPE = "fragmentType";
+
     private ItemsAdapter mAdapter;
+
+    public static BudgetFragment newInstance(final int colorId, final String type) {
+        BudgetFragment budgetFragment = new BudgetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(COLOR_ID, colorId);
+        bundle.putString(TYPE, type);
+        budgetFragment.setArguments(bundle);
+        return budgetFragment;
+    }
 
     @Nullable
     @Override
@@ -37,7 +49,7 @@ public class BudgetFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.budget_item_list);
 
-        mAdapter = new ItemsAdapter();
+        mAdapter = new ItemsAdapter(getArguments().getInt(COLOR_ID));
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.addItem(new Item("Молоко", 70));
