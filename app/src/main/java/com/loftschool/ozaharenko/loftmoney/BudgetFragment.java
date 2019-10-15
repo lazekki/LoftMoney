@@ -13,6 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.loftschool.ozaharenko.loftmoney.MainActivity.TOKEN;
+
 public class BudgetFragment extends Fragment {
 
     private static final int REQUEST_CODE = 100;
@@ -21,6 +28,8 @@ public class BudgetFragment extends Fragment {
 
     private ItemsAdapter mAdapter;
 
+    private Api mApi;
+
     public static BudgetFragment newInstance(final int colorId, final String type) {
         BudgetFragment budgetFragment = new BudgetFragment();
         Bundle bundle = new Bundle();
@@ -28,6 +37,12 @@ public class BudgetFragment extends Fragment {
         bundle.putString(TYPE, type);
         budgetFragment.setArguments(bundle);
         return budgetFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mApi = ((LoftApp)getActivity().getApplication()).getApi();
     }
 
     @Nullable
@@ -72,8 +87,28 @@ public class BudgetFragment extends Fragment {
         } catch (NumberFormatException e) {
             price = 0;
         }
+
+        final int realPrice = price;
+
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            mAdapter.addItem(new Item(data != null ? data.getStringExtra("name") : null, price));
+            final String name = data.getStringExtra("name");
+
+            Call<Status> call = mApi.addItem(new AddItemRequest(name, getArguments().getString(TYPE), price), TOKEN);
+            call.enqueue(new Callback<Status>() {
+                @Override
+                public void onResponse(Call<Status> call, Response<Status> response) {
+                    if (response.body().getStatus().equals("success")) {
+                        mAdapter.addItem(new Item(name, realPrice));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Status> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+
+            mAdapter.addItem(new Item(data != null ? name : null, price));
         }
     }
 
