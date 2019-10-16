@@ -3,6 +3,7 @@ package com.loftschool.ozaharenko.loftmoney;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Comparator;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.loftschool.ozaharenko.loftmoney.MainActivity.TOKEN;
+import retrofit2.http.Query;
 
 public class BudgetFragment extends Fragment {
 
@@ -43,6 +46,7 @@ public class BudgetFragment extends Fragment {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApi = ((LoftApp)getActivity().getApplication()).getApi();
+        loadItems();
     }
 
     @Nullable
@@ -67,10 +71,6 @@ public class BudgetFragment extends Fragment {
         mAdapter = new ItemsAdapter(getArguments().getInt(COLOR_ID));
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.addItem(new Item("Молоко", 70));
-        mAdapter.addItem(new Item("Зубная щетка", 70));
-        mAdapter.addItem(new Item("Сковородка с антипригарным покрытием", 1670));
-
         return view;
     }
 
@@ -93,23 +93,50 @@ public class BudgetFragment extends Fragment {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             final String name = data.getStringExtra("name");
 
-            Call<Status> call = mApi.addItem(new AddItemRequest(name, getArguments().getString(TYPE), price), TOKEN);
+            final String token = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(MainActivity.TOKEN, "");
+
+            Call<Status> call = mApi.addItem(new AddItemRequest(name, getArguments().getString(TYPE), price), token);
             call.enqueue(new Callback<Status>() {
                 @Override
-                public void onResponse(Call<Status> call, Response<Status> response) {
+                public void onResponse(final Call<Status> call, final Response<Status> response) {
                     if (response.body().getStatus().equals("success")) {
                         mAdapter.addItem(new Item(name, realPrice));
                     }
                 }
 
                 @Override
-                public void onFailure(Call<Status> call, Throwable t) {
+                public void onFailure(final Call<Status> call, final Throwable t) {
+
                     t.printStackTrace();
+
                 }
             });
 
-            mAdapter.addItem(new Item(data != null ? name : null, price));
         }
     }
 
+    public void loadItems() {
+
+        final String token = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(MainActivity.TOKEN, "");
+
+        Call<List<Item>> items = mApi.getItems(getArguments().getString(TYPE), token);
+
+        items.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call < List < Item >> call, Response<List<Item>> response) {
+
+                List<Item> items = response.body();
+
+                for (Item item : items) {
+                    mAdapter.addItem(item);
+                }
+            }
+
+            @Override
+            public void onFailure (Call < List < Item >> call, Throwable t){
+
+            }
+
+        });
+    }
 }

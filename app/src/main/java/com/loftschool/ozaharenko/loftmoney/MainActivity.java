@@ -3,6 +3,7 @@ package com.loftschool.ozaharenko.loftmoney;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXPENSE = "expense";
     public static final String INCOME = "income";
-    public static final String TOKEN = "ozaharenko";
-    public static final String KEY_TOKEN = "token";
+    public static final String USER_ID = "ozaharenko";
+    public static String TOKEN = "token";
 
     private Api mApi;
 
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
 
         ViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
+        final BudgetPagerAdapter adapter = new BudgetPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -42,20 +44,35 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setText(R.string.income);
 
         mApi = ((LoftApp)getApplication()).getApi();
-        Call<Status> auth = mApi.auth(TOKEN);
-        auth.enqueue(new Callback<Status>() {
-            @Override
-            public void onResponse(Call<Status> call, Response<Status> response) {
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
-                editor.putString(KEY_TOKEN, response.body().getToken());
-                editor.apply();
-            }
 
-            @Override
-            public void onFailure(Call<Status> call, Throwable t) {
+        final String token = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(TOKEN, "");
 
-            }
-        });
+        if (TextUtils.isEmpty(token)){
+
+            Call<Status> auth = mApi.auth(USER_ID);
+            auth.enqueue(new Callback<Status>() {
+                @Override
+                public void onResponse(Call<Status> call, Response<Status> response
+                ) {
+                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+                    editor.putString(TOKEN, response.body().getToken());
+                    editor.apply();
+
+                    for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                        if (fragment instanceof BudgetFragment) {
+                            ((BudgetFragment)fragment).loadItems();
+                        }
+
+                    };
+                }
+
+                @Override
+                public void onFailure(Call<Status> call, Throwable t) {
+
+                }
+
+            });
+        }
     }
 
     static class BudgetPagerAdapter extends FragmentPagerAdapter {
