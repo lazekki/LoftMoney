@@ -2,7 +2,9 @@ package com.loftschool.ozaharenko.loftmoney;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,29 +17,72 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText mNameEditText;
     private EditText mPriceEditText;
 
+    private Button mAddButton;
+
+    private String mName;
+    private String mPrice;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
         mNameEditText = findViewById(R.id.name_edittext);
+        mNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+                mName = editable.toString();
+                checkEditTextHasText();
+            }
+        });
+
         mPriceEditText = findViewById(R.id.price_edittext);
+        mPriceEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        Button addButton = findViewById(R.id.add_button);
+            }
 
-        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+                mPrice = editable.toString();
+                checkEditTextHasText();
+            }
+        });
+
+
+        mAddButton = findViewById(R.id.add_button);
+
+        mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = mNameEditText.getText().toString();
-                String price = mPriceEditText.getText().toString();
-
-                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(price)) {
+               if (!TextUtils.isEmpty(mName) && !TextUtils.isEmpty(mPrice)) {
                     setResult(
                             RESULT_OK,
-                            new Intent().putExtra("name", name).putExtra("price", price));
+                            new Intent().putExtra("name", mName).putExtra("price", mPrice));
                     finish();
                 }
             }
         });
+    }
+
+    public void checkEditTextHasText() {
+        mAddButton.setEnabled(!TextUtils.isEmpty(mName) && !TextUtils.isEmpty(mPrice));
+
     }
 }

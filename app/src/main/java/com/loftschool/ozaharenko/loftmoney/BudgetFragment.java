@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class BudgetFragment extends Fragment {
 
-    private static final int REQUEST_CODE = 100;
+    public static final int REQUEST_CODE = 100;
     private static final String COLOR_ID = "colorId";
     private static final String TYPE = "fragmentType";
 
@@ -54,14 +54,6 @@ public class BudgetFragment extends Fragment {
             @Nullable final Bundle savedInstanceState
     ) {
         View view = inflater.inflate(R.layout.fragment_budget, null);
-
-        Button callAddButton = view.findViewById(R.id.call_add_item_activity);
-        callAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                startActivityForResult(new Intent(getActivity(), AddItemActivity.class), REQUEST_CODE);
-            }
-        });
 
         RecyclerView recyclerView = view.findViewById(R.id.budget_item_list);
 
