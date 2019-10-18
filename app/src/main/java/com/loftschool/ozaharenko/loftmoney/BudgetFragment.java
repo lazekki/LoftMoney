@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class BudgetFragment extends Fragment {
     private static final String TYPE = "fragmentType";
 
     private ItemsAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Api mApi;
 
@@ -56,6 +58,13 @@ public class BudgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, null);
 
         RecyclerView recyclerView = view.findViewById(R.id.budget_item_list);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadItems();
+            }
+        });
 
         mAdapter = new ItemsAdapter(getArguments().getInt(COLOR_ID));
         recyclerView.setAdapter(mAdapter);
@@ -114,6 +123,8 @@ public class BudgetFragment extends Fragment {
             @Override
             public void onResponse(Call < List < Item >> call, Response<List<Item>> response) {
 
+                mAdapter.clearItems();
+                mSwipeRefreshLayout.setRefreshing(false);
                 List<Item> items = response.body();
 
                 for (Item item : items) {
@@ -123,7 +134,7 @@ public class BudgetFragment extends Fragment {
 
             @Override
             public void onFailure (Call < List < Item >> call, Throwable t){
-
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
         });

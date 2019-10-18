@@ -7,4 +7,5 @@
     <string name="price_with_currency">%1$s ₽</string>
     <string name="expences">Расходы</string>
     <string name="income">Доходы</string>
+    <string name="activity_main_toolbar_title">Учет бюджета</string>
 </resources>
