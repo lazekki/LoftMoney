@@ -40,6 +40,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         notifyDataSetChanged();
     }
 
+    public void clearItems() {
+        mItemsList.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mItemsList.size();
