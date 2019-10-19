@@ -12,4 +12,12 @@
         <item name="colorAccent">#dbdbdb</item>
     </style>
 
+    <style name="TextStyle">
+        <item name="android:textSize">36sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white_two</item>
+    </style>
+
+
 </resources>
