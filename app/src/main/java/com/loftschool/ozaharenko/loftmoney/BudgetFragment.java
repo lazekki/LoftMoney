@@ -7,16 +7,14 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,17 +76,18 @@ public class BudgetFragment extends Fragment {
     ) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int price;
-
-        try {
-            price = Integer.parseInt(data != null ? data.getStringExtra("price") : "");
-        } catch (NumberFormatException e) {
-            price = 0;
-        }
-
-        final int realPrice = price;
-
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+
+            int price;
+
+            try {
+                price = Integer.parseInt(data != null ? data.getStringExtra("price") : "");
+            } catch (NumberFormatException e) {
+                price = 0;
+            }
+
+            final int realPrice = price;
+
             final String name = data.getStringExtra("name");
 
             final String token = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(MainActivity.TOKEN, "");

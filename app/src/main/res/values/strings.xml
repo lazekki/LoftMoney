@@ -8,4 +8,5 @@
     <string name="expences">Expences</string>
     <string name="income">Incomes</string>
     <string name="activity_main_toolbar_title">Personal Budget</string>
+    <string name="enter">Login</string>
 </resources>
