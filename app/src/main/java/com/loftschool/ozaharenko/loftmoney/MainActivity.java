@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final int activeFragmentIndex = viewPager.getCurrentItem();
                 Fragment activeFragment = getSupportFragmentManager().getFragments().get(activeFragmentIndex);
-                activeFragment.startActivityForResult(new Intent(MainActivity.this, AddItemActivity.class), BudgetFragment.REQUEST_CODE);
+                activeFragment.startActivityForResult(new Intent(MainActivity.this, AddItemActivity.class),
+                        BudgetFragment.REQUEST_CODE);
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
             }
         });
 
