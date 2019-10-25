@@ -105,15 +105,13 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
                 @Override
                 public void onResponse(final Call<Status> call, final Response<Status> response) {
                     if (response.body().getStatus().equals("success")) {
-                        mAdapter.addItem(new Item(name, realPrice));
+                        loadItems();
                     }
                 }
 
                 @Override
                 public void onFailure(final Call<Status> call, final Throwable t) {
-
                     t.printStackTrace();
-
                 }
             });
 
@@ -210,7 +208,8 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
 
                 @Override
                 public void onResponse(Call<Status> call, Response<Status> response) {
-
+                    loadItems();
+                    mAdapter.clearSelections();
                 }
 
                 @Override

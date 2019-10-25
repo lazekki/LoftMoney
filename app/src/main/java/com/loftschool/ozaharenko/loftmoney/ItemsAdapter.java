@@ -40,7 +40,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     public int getSelectedSize() {
         int result = 0;
 
-        for (int i = 0; i < mSelectedItems.size(); i++) {
+        for (int i = 0; i < mItemsList.size(); i++) {
             if (mSelectedItems.get(i)) {
                 result++;
             }
@@ -52,10 +52,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         List<Integer> result = new ArrayList<>();
         int i = 0;
         for (Item item : mItemsList) {
-            i++;
             if (mSelectedItems.get(i)) {
                 result.add(item.getId());
             }
+            i++;
         }
         return result;
     }
