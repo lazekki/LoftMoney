@@ -18,4 +18,7 @@ public interface Api {
     @GET("auth")
     Call<Status> auth(@Query("social_user_id") String userId);
 
+    @POST("items/remove")
+    Call<Status> removeItem(@Query("id") String id, @Query("auth-token") String token);
+
 }
