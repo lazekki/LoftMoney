@@ -12,4 +12,6 @@
     <string name="selected">Выделено: %1$s</string>
     <string name="remove">Удалить</string>
     <string name="confirmation">Вы действительно хотите удалить выбранные пункты?</string>
+    <string name="balance">Баланс</string>
+    <string name="finances">Доступные финансы</string>
 </resources>
