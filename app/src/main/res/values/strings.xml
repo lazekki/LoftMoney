@@ -7,9 +7,11 @@
     <string name="price_with_currency">%1$s $</string>
     <string name="expences">Expences</string>
     <string name="income">Incomes</string>
+    <string name="balance">Balance</string>
     <string name="activity_main_toolbar_title">Personal Budget</string>
     <string name="enter">Login</string>
     <string name="selected">Selected: %1$s</string>
     <string name="remove">Delete</string>
     <string name="confirmation">Are you really want to remove selected points?</string>
+    <string name="finances">Available money</string>
 </resources>

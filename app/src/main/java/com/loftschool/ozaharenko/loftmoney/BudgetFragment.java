@@ -135,6 +135,7 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
                 for (Item item : items) {
                     mAdapter.addItem(item);
                 }
+                ((MainActivity)getActivity()).loadBalance();
             }
 
             @Override
@@ -187,12 +188,13 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             removeItems();
+                            mActionMode.finish();
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            mActionMode.finish();
                         }
                     }).show();
         }
