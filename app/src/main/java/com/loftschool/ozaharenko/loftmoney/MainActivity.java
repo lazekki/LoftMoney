@@ -9,6 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -83,6 +84,14 @@ public class MainActivity extends AppCompatActivity {
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof BudgetFragment) {
                 ((BudgetFragment)fragment).loadItems();
+            }
+        }
+    }
+
+    public void loadBalance() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof BalanceFragment) {
+                ((BalanceFragment)fragment).loadBalance();
             }
         }
     }

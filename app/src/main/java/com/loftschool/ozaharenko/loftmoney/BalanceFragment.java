@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,6 +23,7 @@ public class BalanceFragment extends Fragment {
     private TextView myIncome;
     private TextView totalFinances;
     private DiagramView mDiagramView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static BalanceFragment newInstance() {
         return new BalanceFragment();
@@ -44,11 +47,18 @@ public class BalanceFragment extends Fragment {
         myIncome = view.findViewById(R.id.my_income);
         totalFinances = view.findViewById(R.id.total_finances);
         mDiagramView = view.findViewById(R.id.diagram_view);
+        mSwipeRefreshLayout = view.findViewById(R.id.balance_swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadBalance();
+            }
+        });
 
         return view;
     }
 
-    private void loadBalance() {
+    public void loadBalance() {
         String token = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(MainActivity.TOKEN, "");
         Call<BalanceResponce> responceCall = mApi.getBalance(token);
         responceCall.enqueue(new Callback<BalanceResponce>() {
@@ -62,11 +72,13 @@ public class BalanceFragment extends Fragment {
                 myIncome.setText(String.valueOf(totalIncome));
                 totalFinances.setText(String.valueOf(totalIncome - totalExpenses));
                 mDiagramView.update(totalExpenses, totalIncome);
+                mSwipeRefreshLayout.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Call<BalanceResponce> call, Throwable t) {
-
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
