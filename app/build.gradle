@@ -11,10 +11,44 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+
+    /*
+    signingConfigs {
         release {
+            storeFile file ("release.keystore")
+            storePassword '!QAZ2wsx'
+            keyAlias 'ozaharenko'
+            keyPassword '!QAZ2wsx'
+        }
+    }*/
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "URL", "\"https://loftschool.com/android-api/basic/v1/\"")
+            resValue("string", "app_name", "loftmoney-debug")
+        }
+
+        release {
+            //signingConfig signingConfig.release
+            buildConfigField("String", "URL", "\"https://loftschool.com/android-api/basic/v1/\"")
+            resValue("string", "app_name", "LoftMoney")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions 'target', 'total'
+
+    productFlavors {
+        mobile {
+            dimension 'target'
+            applicationId "ru.loftmoney.test"
+        }
+
+        beta {
+            dimension 'total'
+            resValue("String", "app_name", "loftmoney-beta")
+            applicationIdSuffix ".beta"
         }
     }
 }
