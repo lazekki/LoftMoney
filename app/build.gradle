@@ -3,6 +3,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
+    lintOptions {
+        checkReleaseBuilds false
+    }
     defaultConfig {
         applicationId "com.loftschool.ozaharenko.loftmoney"
         minSdkVersion 21
@@ -12,15 +15,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    /*
+
     signingConfigs {
         release {
-            storeFile file ("release.keystore")
+            storeFile file ("E:\\ozaharenko\\LoftMoney\\release.keystore")
             storePassword '!QAZ2wsx'
             keyAlias 'ozaharenko'
             keyPassword '!QAZ2wsx'
         }
-    }*/
+    }
 
     buildTypes {
         debug {
@@ -29,24 +32,22 @@ android {
         }
 
         release {
-            //signingConfig signingConfig.release
+            signingConfig signingConfigs.release
             buildConfigField("String", "URL", "\"https://loftschool.com/android-api/basic/v1/\"")
             resValue("string", "app_name", "LoftMoney")
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
-    flavorDimensions 'target', 'total'
+    flavorDimensions 'target'
 
     productFlavors {
         mobile {
-            dimension 'target'
             applicationId "ru.loftmoney.test"
         }
 
         beta {
-            dimension 'total'
             resValue("String", "app_name", "loftmoney-beta")
             applicationIdSuffix ".beta"
         }
