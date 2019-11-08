@@ -19,9 +19,9 @@ android {
     signingConfigs {
         release {
             storeFile file ("release.keystore")
-            storePassword '!QAZ2wsx'
+            storePassword '123456'
             keyAlias 'ozaharenko'
-            keyPassword '!QAZ2wsx'
+            keyPassword '123456'
         }
     }
 
